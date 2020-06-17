@@ -500,6 +500,8 @@ int main(int ac, char **av)
 
 	tty_stdio = isatty(0) && isatty(1);
 
+        printf("rockdebug... File:%s  Fn:%s Ln:%d \n", __FILE__, __FUNCTION__, __LINE__);
+
 	while ((opt = getopt_long(ac, av, "s", long_opts, NULL)) != -1) {
 		if (opt == 's') {
 			conf_set_message_callback(NULL);
