@@ -516,6 +516,7 @@ int main(int ac, char **av)
 			 */
 			conf_set_message_callback(NULL);
 			sync_kconfig = 1;
+                        printf("rockdebug... File:%s  Fn:%s Ln:%d \n", __FILE__, __FUNCTION__, __LINE__);
 			break;
 		case defconfig:
 		case savedefconfig:
@@ -568,9 +569,11 @@ int main(int ac, char **av)
 	}
 	name = av[optind];
 	conf_parse(name);
+        printf("rockdebug... File:%s  Fn:%s Ln:%d  name=%s \n", __FILE__, __FUNCTION__, __LINE__, name);
 	//zconfdump(stdout);
 	if (sync_kconfig) {
 		name = conf_get_configname();
+                printf("rockdebug... File:%s  Fn:%s Ln:%d  config_name=%s \n", __FILE__, __FUNCTION__, __LINE__, name);
 		if (stat(name, &tmpstat)) {
 			fprintf(stderr, "***\n"
 				"*** Configuration file \"%s\" not found!\n"
@@ -601,6 +604,7 @@ int main(int ac, char **av)
 	case oldconfig:
 	case listnewconfig:
 	case olddefconfig:
+                printf("rockdebug... File:%s  Fn:%s Ln:%d  conf_read  \n", __FILE__, __FUNCTION__, __LINE__);
 		conf_read(NULL);
 		break;
 	case allnoconfig:
@@ -705,6 +709,7 @@ int main(int ac, char **av)
 			fprintf(stderr, "\n*** Error during update of the configuration.\n\n");
 			return 1;
 		}
+                printf("rockdebug... File:%s  Fn:%s Ln:%d  config_write_autoconf done... \n", __FILE__, __FUNCTION__, __LINE__);
 	} else if (input_mode == savedefconfig) {
 		if (conf_write_defconfig(defconfig_file)) {
 			fprintf(stderr, "n*** Error while saving defconfig to: %s\n\n",
