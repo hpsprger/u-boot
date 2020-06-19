@@ -1788,6 +1788,7 @@ $(sort $(u-boot-init) $(u-boot-main)): $(u-boot-dirs) ;
 
 PHONY += $(u-boot-dirs)
 $(u-boot-dirs): prepare scripts
+	@echo "===>>>>>...."$(Q)$(MAKE) $(build)=$@
 	$(Q)$(MAKE) $(build)=$@
 
 tools: prepare
