@@ -289,7 +289,9 @@ int conf_read_simple(const char *name, int def)
 	struct symbol *sym;
 	int i, def_flags;
 
-	if (name) {
+        printf("rockdebug... File:%s  Fn:%s Ln:%d  name=%s  \n", __FILE__, __FUNCTION__, __LINE__, name);
+	
+        if (name) {
 		in = zconf_fopen(name);
 	} else {
 		struct property *prop;
@@ -316,7 +318,10 @@ int conf_read_simple(const char *name, int def)
 			}
 		}
 	}
-	if (!in)
+
+        printf("rockdebug... File:%s  Fn:%s Ln:%d  name=%s  \n", __FILE__, __FUNCTION__, __LINE__, name);
+	
+        if (!in)
 		return 1;
 
 load:
@@ -326,6 +331,8 @@ load:
 
 	def_flags = SYMBOL_DEF << def;
 	for_all_symbols(i, sym) {
+                
+                printf("rockdebug... File:%s  Fn:%s Ln:%d  sym->name=%s  \n", __FILE__, __FUNCTION__, __LINE__, sym->name);
 		sym->flags |= SYMBOL_CHANGED;
 		sym->flags &= ~(def_flags|SYMBOL_VALID);
 		if (sym_is_choice(sym))
@@ -346,6 +353,7 @@ load:
 	while (compat_getline(&line, &line_asize, in) != -1) {
 		conf_lineno++;
 		sym = NULL;
+                printf("rockdebug... File:%s  Fn:%s Ln:%d  line=%s  \n", __FILE__, __FUNCTION__, __LINE__, line);
 		if (line[0] == '#') {
 			if (memcmp(line + 2, CONFIG_, strlen(CONFIG_)))
 				continue;
@@ -445,8 +453,10 @@ int conf_read(const char *name)
 	int i;
 
 	sym_set_change_count(0);
-
-	if (conf_read_simple(name, S_DEF_USER)) {
+        
+        printf("rockdebug... File:%s  Fn:%s Ln:%d  conf_read  \n", __FILE__, __FUNCTION__, __LINE__);
+	
+        if (conf_read_simple(name, S_DEF_USER)) {
 		sym_calc_value(modules_sym);
 		return 1;
 	}
@@ -673,11 +683,13 @@ static void conf_write_symbol(FILE *fp, struct symbol *sym,
 		str = sym_get_string_value(sym);
 		str2 = xmalloc(strlen(str) + 3);
 		sprintf(str2, "\"%s\"", str);
+                printf("rockdebug... File:%s  Fn:%s Ln:%d  sym:=%s str2:%s \n", __FILE__, __FUNCTION__, __LINE__, sym->name, str2);
 		printer->print_symbol(fp, sym, str2, printer_arg);
 		free((void *)str2);
 		break;
 	default:
 		str = sym_get_string_value(sym);
+                printf("rockdebug... File:%s  Fn:%s Ln:%d  sym:=%s str:%s \n", __FILE__, __FUNCTION__, __LINE__, sym->name, str);
 		printer->print_symbol(fp, sym, str, printer_arg);
 	}
 }
@@ -1053,6 +1065,7 @@ int conf_write_autoconf(void)
 		if (!(sym->flags & SYMBOL_WRITE) || !sym->name)
 			continue;
 
+                printf("rockdebug... File:%s  Fn:%s Ln:%d  sym->name=%s  \n", __FILE__, __FUNCTION__, __LINE__, sym->name);
 		/* write symbol to auto.conf, tristate and header files */
 		conf_write_symbol(out, sym, &kconfig_printer_cb, (void *)1);
 
@@ -1069,6 +1082,7 @@ int conf_write_autoconf(void)
 		name = "include/generated/autoconf.h";
 	if (make_parent_dir(name))
 		return 1;
+        printf("rockdebug... File:%s  Fn:%s Ln:%d  .tmpconfig.h--rename--->%s  \n", __FILE__, __FUNCTION__, __LINE__, name);
 	if (rename(".tmpconfig.h", name))
 		return 1;
 
@@ -1077,6 +1091,7 @@ int conf_write_autoconf(void)
 		name = "include/config/tristate.conf";
 	if (make_parent_dir(name))
 		return 1;
+        printf("rockdebug... File:%s  Fn:%s Ln:%d  .tmpconfig_tristate--rename---->%s  \n", __FILE__, __FUNCTION__, __LINE__, name);
 	if (rename(".tmpconfig_tristate", name))
 		return 1;
 
@@ -1087,6 +1102,7 @@ int conf_write_autoconf(void)
 	 * This must be the last step, kbuild has a dependency on auto.conf
 	 * and this marks the successful completion of the previous steps.
 	 */
+        printf("rockdebug... File:%s  Fn:%s Ln:%d  .tmpconfig-----rename---->%s  \n", __FILE__, __FUNCTION__, __LINE__, name);
 	if (rename(".tmpconfig", name))
 		return 1;
 
