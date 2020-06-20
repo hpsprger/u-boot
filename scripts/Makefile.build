@@ -97,6 +97,12 @@ __build: $(if $(KBUILD_BUILTIN),$(builtin-target) $(lib-target) $(extra-y)) \
 	 $(if $(KBUILD_MODULES),$(obj-m) $(modorder-target)) \
 	 $(subdir-ym) $(always)
 	@:
+	@echo start  printf .............
+	@echo "===>"__build KBUILD_BUILTIN=$(KBUILD_BUILTIN)"==>"builtin-target=$(builtin-target)     lib-target=$(lib-target)     extra-y=$(extra-y).........
+	@echo "===>"__build KBUILD_MODULES=$(KBUILD_MODULES)"==>"$(obj-m) $(modorder-target) .........
+	@echo "===>"__build subdir-ym=$(subdir-ym) ...      always=$(always) .........
+	@echo "===>"__build all done .........
+	@echo end  printf .............
 
 # Linus' kernel sanity checking tool
 ifneq ($(KBUILD_CHECKSRC),0)
@@ -339,6 +345,7 @@ cmd_link_o_target = $(if $(strip $(obj-y)),\
 		      rm -f $@; $(AR) rcs$(KBUILD_ARFLAGS) $@)
 
 $(builtin-target): $(obj-y) FORCE
+	@echo "===>"builtin-target=$(builtin-target)...obj-y= $(obj-y)
 	$(call if_changed,link_o_target)
 
 targets += $(builtin-target)
