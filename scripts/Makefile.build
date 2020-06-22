@@ -372,6 +372,7 @@ quiet_cmd_link_l_target = AR      $@
 cmd_link_l_target = rm -f $@; $(AR) rcs$(KBUILD_ARFLAGS) $@ $(lib-y)
 
 $(lib-target): $(lib-y) FORCE
+	@echo "xxxxxxx====>"lib-target=$(lib-target) --- lib-y=$(lib-y)
 	$(call if_changed,link_l_target)
 
 targets += $(lib-target)
@@ -423,6 +424,7 @@ targets += $(call intermediate_targets, .lex.o, .lex.c) \
 
 PHONY += $(subdir-ym)
 $(subdir-ym):
+	@echo "xxxx1111===>"subdir-ym=$(subdir-ym) $(Q)$(MAKE) $(build)=$@
 	$(Q)$(MAKE) $(build)=$@
 
 # Add FORCE to the prequisites of a target to force it to be always rebuilt.
